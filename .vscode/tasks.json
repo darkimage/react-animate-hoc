@@ -1,0 +1,38 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "start",
+			"type": "shell",
+			"dependsOn": [
+				"library",
+				"examples"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "library",
+			"type": "shell",
+			"command": "npm start",
+			"problemMatcher": [],
+			"presentation": {
+				"panel": "shared",
+				"group": "dev"
+			}
+		},
+		{
+			"label": "examples",
+			"type": "shell",
+			"command": "cd example && npm start",
+			"problemMatcher": [],
+			"presentation": {
+				"panel": "shared",
+				"group": "dev"
+			}
+		}
+	]
+}
