@@ -1,10 +1,17 @@
-import React from 'react'
+import React from 'react';
+import { withAnimated } from 'react-animate-hoc';
+import 'animate.css';
 
-import { ExampleComponent } from 'react-animate-hoc'
-import 'react-animate-hoc/dist/index.css'
+const BounceIn = withAnimated(function (props) {
+  return <div style={props.style} className={props.className}>
+    I'm a Bouncing div
+  </div>
+}, {
+  animation: "bounceIn"
+})
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <BounceIn />
 }
 
 export default App

@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#root div {
+  border-radius: 10px;
+  min-height: 100px;
+  max-width: 200px;
+  max-height: 200px;
+  border: 2px solid #8b8b8b;
+  margin: 2rem;
+}
