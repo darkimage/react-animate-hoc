@@ -1,6 +1,6 @@
 # react-animate-hoc
 
-> Hoc pattern for animate components using the aweasome animate.css library
+> Hoc pattern for animate components using the awesome [animate.css](https://animate.style/) library
 
 [![NPM](https://img.shields.io/npm/v/react-animate-hoc.svg)](https://www.npmjs.com/package/react-animate-hoc) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -10,19 +10,23 @@
 npm install --save react-animate-hoc
 ```
 
-## Usage
+## Basic Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React from 'react'
 
-import MyComponent from 'react-animate-hoc'
-import 'react-animate-hoc/dist/index.css'
+import { withAnimated } from 'react-animate-hoc'
+import "animate.css" //dont forget to include the awesome animate.css
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+//if you are using your own component specify the `props.style` and `props.className` property
+const MyAnimatedComponent = withAnimated((props) =>{
+  return 
+    <div style={props.style} className={props.className}>
+      I'm a bouncing Div
+    </div>
+},{
+  animation: "bounceIn" //specify an animation name from animate.css
+});
 ```
 
 ## License

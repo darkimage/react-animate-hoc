@@ -1,10 +1,10 @@
 {
-  "name": "react-animate-hoc",
+  "name": "@darkimage/react-animate-hoc",
   "version": "1.0.0",
   "description": "Hoc pattern for animate components using the aweasome animate.css library",
   "author": "darkimage",
   "license": "MIT",
-  "repository": "darkimage/react-animate-hoc",
+  "repository": "git://github.com/darkimage/react-animate-hoc",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
