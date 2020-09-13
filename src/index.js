@@ -5,7 +5,8 @@ function getDisplayName(WrappedComponent) {
 }
 
 export function withAnimated(Component, animateClass) {
-  const withAnimated = (props) => {
+  const withAnimated = function (props) {
+    console.log(props)
     const classes = []
     const cssKeyClasses = ['animation', 'delay', 'speed']
     animateClass = { ...animateClass, ...props.animateCss }
@@ -26,7 +27,7 @@ export function withAnimated(Component, animateClass) {
       <Component
         {...rest}
         style={styleElem}
-        className={`${className} ${
+        className={`${className ? className : ''} ${
           classes.length !== 0 ? 'animate__animated' : ''
         } ${classes.join(' ')}`}
       />
