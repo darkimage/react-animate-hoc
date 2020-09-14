@@ -4,24 +4,30 @@ import 'animate.css'
 import { Head } from './typography-inject'
 import styled from 'styled-components'
 import Prism from 'prismjs'
-import '../node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
-import './prism.css'
+import 'prismjs/components/prism-jsx'
+import 'prismjs/themes/prism.css'
 
-const BounceIn = withAnimated(
-  function (props) {
+console.log(Prism)
+
+const div = (props) => {
     return (
       <div {...props}> 
-        I'm a Bouncing div
+			{props.children}
       </div>)
-  },
-  {
+}
+
+const BounceIn = withAnimated(div,{
     animation: 'bounceIn',
     infinite: true
   }
 )
 
+const Emoji = function (props) {
+	return <span>{props.emoji}</span>
+};
+
 const Code = function (props) {
-  const code = <code className={props.language ? props.language :'language-javascript'}>{`${props.code}`}</code>;
+  const code = <code className={props.language ? props.language :'language-jsx'}>{`${props.code}`}</code>;
   return !props.noPre ? <pre className="NormalizeWhitespace">{code}</pre> : code
 }
 
@@ -40,7 +46,7 @@ const AppContainer = withAnimated(styled.div`
 
 const codeWithAnimated = 'withAnimated()';
 const codeWithAnimatedGroup = 'withAnimatedGroup()';
-const testCode = `
+const exampleCode = `
 // Simple component that render a div 
 // (style and className are necessary for the library to work)
 const div = function (props) {
@@ -56,7 +62,22 @@ const BouncingDiv = withAnimated(div,{
     animation: 'bounceIn',
     infinite: true
   }
-);`
+);`;
+
+const propsExampleCode = `
+const SwingingDiv = withAnimated(function (props) {
+	return (
+		<div {...props}> 
+			I'm a Swinging div
+		</div>
+	)
+});
+
+const App = () => {
+	return (<SwingingDiv animatecss={{animation: "swing", infinite: true}}/>)
+}`;
+
+const SwingInjsx = withAnimated(div);
 
 const App = () => {
   return (
@@ -70,9 +91,15 @@ const App = () => {
 			</p>
 			<div className="examples">
 				<h2>Basic Example</h2>
-				<Code code={testCode}/>
-        <strong>Result:</strong><BounceIn className="animateContainer" />
-        <h2>Styled Components, why not 🤩</h2>
+				<Code code={exampleCode}/>
+				<strong>Result:</strong>
+				<BounceIn className="animateContainer">I'm a Bouncing div</BounceIn>
+				<h4>Using props is JSX</h4>
+				<p>you can also use it by specify the <Code noPre code="animatecss" /> property directly in JSX</p>
+				<Code code={propsExampleCode} />
+				<strong>Result:</strong>
+				<SwingInjsx className="animateContainer" animatecss={{ animation: "swing", infinite: true }} >I'm a Swinging div</SwingInjsx>
+				<h2>Styled Components, why not <Emoji emoji="🤩"/></h2>
 			</div>
     </AppContainer>
   )
