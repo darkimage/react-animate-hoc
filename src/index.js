@@ -13,21 +13,26 @@ export function withAnimated(Component, animateClass) {
     for (const key of cssKeyClasses) {
       if (Object.prototype.hasOwnProperty.call(animateData, key)) {
         const value = animateData[key]
-        if (key !== 'animation') {
+        if (key !== 'animation' && key !== 'infinite') {
           classes.push(`animate__${key}-${value}`)
         }
         if (key === 'infinite') {
           if (value) {
             classes.push(`animate__${key}`)
           }
-        }else {
-          classes.push(`animate__${value}`)
+        } else {
+          if (!Array.isArray(value)) {
+            classes.push(`animate__${value}`)
+          }
         }
       }
     }
     const { className, style, animatecss, ...rest } = props
     const { animation, delay, speed, infinite, ...animateStyle } = animateData
     const styleElem = { ...style, ...animateStyle }
+    if (Array.isArray(animation)) {
+      styleElem.animationName = animation.join(',')
+    }
     return (
       <Component
         {...rest}
