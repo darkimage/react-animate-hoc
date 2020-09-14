@@ -9,10 +9,10 @@ export function withAnimated(Component, animateClass) {
     console.log(props)
     const classes = []
     const cssKeyClasses = ['animation', 'delay', 'speed', 'duration', 'infinite']
-    animateClass = { ...animateClass, ...props.animateCss }
+    const animateData = { ...animateClass, ...(props.animatecss) }
     for (const key of cssKeyClasses) {
-      if (Object.prototype.hasOwnProperty.call(animateClass, key)) {
-        const value = animateClass[key]
+      if (Object.prototype.hasOwnProperty.call(animateData, key)) {
+        const value = animateData[key]
         if (key !== 'animation') {
           classes.push(`animate__${key}-${value}`)
         }
@@ -25,8 +25,8 @@ export function withAnimated(Component, animateClass) {
         }
       }
     }
-    const { className, style, ...rest } = props
-    const { animation, delay, speed, ...animateStyle } = animateClass
+    const { className, style, animatecss, ...rest } = props
+    const { animation, delay, speed, infinite, ...animateStyle } = animateData
     const styleElem = { ...style, ...animateStyle }
     return (
       <Component
@@ -67,7 +67,7 @@ export function withAnimatedGroup(Component, animateOptions) {
   const withAnimatedChildren = (props) => {
     const children = React.Children.map(props.children, (Child, i) => {
       return React.cloneElement(Child, {
-        animateCss: constructAnimCss(i)
+        animatecss: constructAnimCss(i)
       })
     })
     return <Component {...props}>{children}</Component>
