@@ -14,11 +14,11 @@
     "react-dom": "file:../node_modules/react-dom",
     "react-scripts": "file:../node_modules/react-scripts",
     "react-animate-hoc": "file:..",
-    "prismjs": "file:../node_modules/prismjs",
     "react-helmet": "file:../node_modules/react-helmet",
     "styled-components": "file:../node_modules/styled-components",
     "typography": "file:../node_modules/typography",
-    "typography-theme-twin-peaks": "file:../node_modules/typography-theme-twin-peaks"
+    "typography-theme-twin-peaks": "file:../node_modules/typography-theme-twin-peaks",
+    "prismjs": "file:../node_modules/prismjs"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
