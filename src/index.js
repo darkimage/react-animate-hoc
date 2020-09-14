@@ -8,14 +8,19 @@ export function withAnimated(Component, animateClass) {
   const withAnimated = function (props) {
     console.log(props)
     const classes = []
-    const cssKeyClasses = ['animation', 'delay', 'speed']
+    const cssKeyClasses = ['animation', 'delay', 'speed', 'duration', 'infinite']
     animateClass = { ...animateClass, ...props.animateCss }
     for (const key of cssKeyClasses) {
       if (Object.prototype.hasOwnProperty.call(animateClass, key)) {
         const value = animateClass[key]
         if (key !== 'animation') {
           classes.push(`animate__${key}-${value}`)
-        } else {
+        }
+        if (key === 'infinite') {
+          if (value) {
+            classes.push(`animate__${key}`)
+          }
+        }else {
           classes.push(`animate__${value}`)
         }
       }
