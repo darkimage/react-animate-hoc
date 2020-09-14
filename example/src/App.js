@@ -22,6 +22,15 @@ const BounceIn = withAnimated(div,{
   }
 )
 
+const StyledDiv = withAnimated(styled.div`
+  background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`, {
+  animation: 'tada',
+  infinite: true
+})
+
 const Emoji = function (props) {
 	return <span>{props.emoji}</span>
 };
@@ -46,8 +55,7 @@ const AppContainer = withAnimated(styled.div`
 
 const codeWithAnimated = 'withAnimated()';
 const codeWithAnimatedGroup = 'withAnimatedGroup()';
-const exampleCode = `
-// Simple component that render a div 
+const exampleCode = `// Simple component that render a div 
 // (style and className are necessary for the library to work)
 const div = function (props) {
   return (
@@ -64,8 +72,9 @@ const BouncingDiv = withAnimated(div,{
   }
 );`;
 
-const propsExampleCode = `
-const SwingingDiv = withAnimated(function (props) {
+const propsExampleCode = `import { render } from 'react-dom'
+
+'const SwingingDiv = withAnimated(function (props) {
 	return (
 		<div {...props}> 
 			I'm a Swinging div
@@ -73,9 +82,27 @@ const SwingingDiv = withAnimated(function (props) {
 	)
 });
 
-const App = () => {
-	return (<SwingingDiv animatecss={{animation: "swing", infinite: true}}/>)
-}`;
+render (
+  <SwingingDiv animatecss={{animation: "swing", infinite: true}}/>,
+  document.getElementById('root')
+)`;
+
+const styledExampleCode = `import styled from 'styled-components'
+import { render } from 'react-dom'
+
+const StyledDiv = withAnimated(styled.div\`
+  background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+\`, {
+  animation: 'tada',
+  infinite: true
+})
+
+render(
+  <StyledDiv>I'm a Fancy styled div</StyledDiv>,
+  document.getElementById('root')
+)`
 
 const SwingInjsx = withAnimated(div);
 
@@ -100,6 +127,11 @@ const App = () => {
 				<strong>Result:</strong>
 				<SwingInjsx className="animateContainer" animatecss={{ animation: "swing", infinite: true }} >I'm a Swinging div</SwingInjsx>
 				<h2>Styled Components, why not <Emoji emoji="🤩"/></h2>
+        <p>There are no issue using <a href="https://styled-components.com/">Styled Components</a> with the library, they just work and are pretty fancy</p>
+        <Code code={styledExampleCode} />
+        <strong>Result:</strong>
+        <StyledDiv className="animateContainer">I'm a Fancy styled div</StyledDiv>
+        <h2>Using multiple animations <Emoji emoji="🤯"/></h2>
 			</div>
     </AppContainer>
   )
