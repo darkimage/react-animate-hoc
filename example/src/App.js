@@ -12,7 +12,7 @@ console.log(Prism)
 const div = (props) => {
     return (
       <div {...props}> 
-			{props.children}
+      {props.children}
       </div>)
 }
 
@@ -32,7 +32,7 @@ const StyledDiv = withAnimated(styled.div`
 })
 
 const Emoji = function (props) {
-	return <span>{props.emoji}</span>
+  return <span>{props.emoji}</span>
 };
 
 const Code = function (props) {
@@ -75,11 +75,11 @@ const BouncingDiv = withAnimated(div,{
 const propsExampleCode = `import { render } from 'react-dom'
 
 'const SwingingDiv = withAnimated(function (props) {
-	return (
-		<div {...props}> 
-			I'm a Swinging div
-		</div>
-	)
+  return (
+    <div {...props}> 
+      I'm a Swinging div
+    </div>
+  )
 });
 
 render (
@@ -114,25 +114,25 @@ const App = () => {
       </Head>
       <h1>React Animate <a href="https://reactjs.org/docs/higher-order-components.html">HOC</a></h1>
       <p>
-				This React library is designed to leverage the awesome <a href="https://animate.style/">animate.css</a> with little work, simply by wrapping your components using either <Code noPre code={codeWithAnimated} /> or <Code noPre code={codeWithAnimatedGroup}/>
-			</p>
-			<div className="examples">
-				<h2>Basic Example</h2>
-				<Code code={exampleCode}/>
-				<strong>Result:</strong>
-				<BounceIn className="animateContainer">I'm a Bouncing div</BounceIn>
-				<h4>Using props is JSX</h4>
-				<p>you can also use it by specify the <Code noPre code="animatecss" /> property directly in JSX</p>
-				<Code code={propsExampleCode} />
-				<strong>Result:</strong>
-				<SwingInjsx className="animateContainer" animatecss={{ animation: "swing", infinite: true }} >I'm a Swinging div</SwingInjsx>
-				<h2>Styled Components, why not <Emoji emoji="🤩"/></h2>
+        This React library is designed to leverage the awesome <a href="https://animate.style/">animate.css</a> with little work, simply by wrapping your components using either <Code noPre code={codeWithAnimated} /> or <Code noPre code={codeWithAnimatedGroup}/>
+      </p>
+      <div className="examples">
+        <h2>Basic Example</h2>
+        <Code code={exampleCode}/>
+        <strong>Result:</strong>
+        <BounceIn className="animateContainer">I'm a Bouncing div</BounceIn>
+        <h4>Using props is JSX</h4>
+        <p>you can also use it by specify the <Code noPre code="animatecss" /> property directly in JSX</p>
+        <Code code={propsExampleCode} />
+        <strong>Result:</strong>
+        <SwingInjsx className="animateContainer" animatecss={{ animation: "swing", infinite: true }} >I'm a Swinging div</SwingInjsx>
+        <h2>Styled Components, why not <Emoji emoji="🤩"/></h2>
         <p>There are no issue using <a href="https://styled-components.com/">Styled Components</a> with the library, they just work and are pretty fancy</p>
         <Code code={styledExampleCode} />
         <strong>Result:</strong>
         <StyledDiv className="animateContainer">I'm a Fancy styled div</StyledDiv>
         <h2>Using multiple animations <Emoji emoji="🤯"/></h2>
-			</div>
+      </div>
     </AppContainer>
   )
 } 
