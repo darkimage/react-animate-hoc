@@ -10,10 +10,10 @@ import 'prismjs/themes/prism.css'
 console.log(Prism)
 
 const div = (props) => {
-    return (
-      <div {...props}> 
+  return (
+    <div {...props}> 
       {props.children}
-      </div>)
+    </div>)
 }
 
 const BounceIn = withAnimated(div,{
@@ -21,6 +21,11 @@ const BounceIn = withAnimated(div,{
     infinite: true
   }
 )
+
+const MultipleAnim = withAnimated(div, {
+  animation: ['bounce', 'flash'],
+  infinite: true
+})
 
 const StyledDiv = withAnimated(styled.div`
   background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
@@ -34,6 +39,9 @@ const StyledDiv = withAnimated(styled.div`
 const Emoji = function (props) {
   return <span>{props.emoji}</span>
 };
+
+const SwingInjsx = withAnimated(div);
+
 
 const Code = function (props) {
   const code = <code className={props.language ? props.language :'language-jsx'}>{`${props.code}`}</code>;
@@ -49,8 +57,8 @@ const AppContainer = withAnimated(styled.div`
     margin: 5% 8%;
   }
 `, {
-    animation: "fadeIn",
-    animationDuration: "2s"
+  animation: "fadeIn",
+  animationDuration: "2s"
 });
 
 const codeWithAnimated = 'withAnimated()';
@@ -87,24 +95,21 @@ render (
   document.getElementById('root')
 )`;
 
-const styledExampleCode = `import styled from 'styled-components'
-import { render } from 'react-dom'
-
-const StyledDiv = withAnimated(styled.div\`
+const styledExampleCode = `const StyledDiv = withAnimated(styled.div\`
   background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 \`, {
   animation: 'tada',
   infinite: true
-})
+})`
 
-render(
-  <StyledDiv>I'm a Fancy styled div</StyledDiv>,
-  document.getElementById('root')
-)`
-
-const SwingInjsx = withAnimated(div);
+const multipleExampleCode = `const MultipleAnim = withAnimated((props) => {
+  return (<div {...props}>{props.children}</div>)
+}, {
+  animation: ['bounce', 'flash'],
+  infinite: true
+})`
 
 const App = () => {
   return (
@@ -131,7 +136,13 @@ const App = () => {
         <Code code={styledExampleCode} />
         <strong>Result:</strong>
         <StyledDiv className="animateContainer">I'm a Fancy styled div</StyledDiv>
-        <h2>Using multiple animations <Emoji emoji="🤯"/></h2>
+        <h2>Using multiple animations <Emoji emoji="🤯" /></h2>
+        <p>You can mix all the animations you want by simply put them in an array in the <Code noPre code="animation"/> proprety</p>
+        <Code code={multipleExampleCode} />
+        <strong>Result:</strong>
+        <MultipleAnim className="animateContainer">Multiple animations!!</MultipleAnim>
+        <h2>Animate.css property list</h2>
+        <h2>Advanced usage <Emoji emoji="" /></h2>
       </div>
     </AppContainer>
   )
