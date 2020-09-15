@@ -18,7 +18,8 @@
     "styled-components": "file:../node_modules/styled-components",
     "typography": "file:../node_modules/typography",
     "typography-theme-twin-peaks": "file:../node_modules/typography-theme-twin-peaks",
-    "prismjs": "file:../node_modules/prismjs"
+    "prismjs": "file:../node_modules/prismjs",
+    "rc-table": "file:../node_modules/rc-table"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
