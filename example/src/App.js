@@ -1,11 +1,12 @@
 import React from 'react'
-import { withAnimated } from 'react-animate-hoc'
+import { withAnimated} from 'react-animate-hoc'
 import 'animate.css'
 import { Head } from './typography-inject'
 import styled from 'styled-components'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-jsx'
 import 'prismjs/themes/prism.css'
+import Table from 'rc-table';
 
 const div = (props) => {
   return (
@@ -42,8 +43,11 @@ const SwingInjsx = withAnimated(div);
 
 
 const Code = function (props) {
-  const code = <code className={props.language ? props.language :'language-jsx'}>{`${props.code}`}</code>;
-  return !props.noPre ? <pre className="NormalizeWhitespace">{code}</pre> : code
+  const { className, ...rest } = props
+  var style = rest;
+  if (props.noPre) { style = {}}
+  const code = <code className={`${className ? className : ''} ${props.language ? props.language : 'language-jsx'}`} {...style}>{`${props.code}`}</code>;
+  return !props.noPre ? <pre className="NormalizeWhitespace" {...style}>{code}</pre> : code
 }
 
 const AppContainer = withAnimated(styled.div`
@@ -109,6 +113,56 @@ const multipleExampleCode = `const MultipleAnim = withAnimated((props) => {
   infinite: true
 })`
 
+const customCssExampleCode = `withAnimated(div,{
+  animation: 'bounce', //normal library property
+  aniamtionDelay: '6s' //css property that will get injected in the component style
+})`
+
+const columns = [
+  {
+    title: 'Key',
+    dataIndex: 'prop',
+    key: 'prop',
+    width: 200,
+    render: (value) => <Code code={value} />,
+  },
+  {
+    title: 'Data Type',
+    dataIndex: 'data',
+    key: 'data',
+    width: 200,
+    render: (value) => {
+      const codes = [];
+      for (const code of  value.split(/\s/)) {
+        codes.push(<Code style={{margin: '0.1rem'}} code={code} />)
+      }
+      return (<div style={{ display: 'flex', flexWrap: 'wrap'}}>{codes}</div>)
+    },
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+    width: 200,
+    render: (value) => <div>{value}</div>,
+  },
+];
+
+const data = [
+  {
+    prop: 'animation:',
+    data: 'string Array<string> Function',
+    description: [<span key='d1-0'>Animation keybindings name, you can see all the animation names in the official </span>, <a key="d1-1" href="https://animate.style/">Animate.css</a>, <span key='d1-2'> website. If an array is specified multiple animation are added using the </span>, <strong key="d1-3">animation-name</strong>,<span key='d1-4'> css property</span>],
+    key: '1'
+  },
+  {
+    prop: 'duration:',
+    data: 'int string Array<string> Array<int> Function',
+    description: <span>The duration (length) of the animation, if in animate.css doesn't exist a class with the duration specified by this property then the <strong>animation-duration</strong> property is injected directly in the style of the wrapped element</span>,
+    key: '2'
+  },
+];
+
 const App = () => {
   return (
     <AppContainer>
@@ -139,8 +193,13 @@ const App = () => {
         <Code code={multipleExampleCode} />
         <strong>Result:</strong>
         <MultipleAnim className="animateContainer">Multiple animations!!</MultipleAnim>
-        <h2>Animate.css property list</h2>
-        <h2>Advanced usage <Emoji emoji="" /></h2>
+        <h2>Animate.css properties list</h2>
+        <p>This is the complete list of supported options from Animate.css that you can supply to the hoc functions, remember that you can specify additional css properties by writing them in camel case.</p>
+        <p>You can also assign to each of this property a function, the parameters passed to the function are:</p> <Code code="(animateVariables, props) => {}"/> <p><strong>animateVariables</strong> contains an object with all the default css variables values of animate.css.</p>
+        <Code code={customCssExampleCode}/>
+        <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={data} />
+        <h2>Using <Code noPre code="withAnimatedGroup()"/> <Emoji emoji="🤔" /></h2>
+        <h2>Advanced usage <Emoji emoji="🤓" /></h2>
       </div>
     </AppContainer>
   )
