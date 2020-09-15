@@ -29,7 +29,7 @@ export function withAnimated(Component, animateClass) {
     console.log(props)
     const classes = []
     const animateData = { ...animateClass, ...(props.animatecss) }
-    const { animation, delay, speed, infinite, duration, ...animateStyle } = animateData
+    const { animation, delay, speed, infinite, ...animateStyle } = animateData
     const styleElem = { ...style, ...animateStyle }
 
     setProperty(animation, props,
@@ -41,16 +41,33 @@ export function withAnimated(Component, animateClass) {
       () => { throw 'infinite property cannot be an array!' }
     )
     setProperty(speed, props,
-      (value) => classes.push(`animate__${value}`),
+      (value) => {
+        if (['slow','slower','fast','faster'].includes(value)) {
+          classes.push(`animate__${value}`)
+        } else if(typeof value === "string") {
+          styleElem.animationDuration = value
+        } else {
+          styleElem.animationDuration = `${value}s`
+        }
+      },
       (value) => styleElem.animationDuration = value.join(',')
     )
     setProperty(delay, props,
-      (value) => classes.push(`animate__delay-${value}`),
+      (value) => {
+        if (['2s', '3s', '4s', '5s', 2, 3, 4, 5].includes(value)) {
+          if (typeof value === "number") {
+            value = `${value}s`
+          }
+          classes.push(`animate__delay-${value}`)
+        } else {
+          if (typeof value == "string") {
+            styleElem.animationDelay = value
+          } else {
+            styleElem.animationDelay = `${value}s`
+          }
+        }
+      },
       (value) => styleElem.animationDelay = value.join(',')
-    )
-    setProperty(duration, props,
-      (value) => classes.push(`animate__duration-${value}`),
-      (value) => styleElem.animationDuration = value.join(',')
     )
 
     const { className, style, animatecss, ...rest } = props
@@ -74,7 +91,7 @@ export function withAnimatedGroup(Component, animateOptions) {
 
   const constructAnimCss = (offset) => {
     const css = {
-      animationDelay: computeTime(
+      animationDelay: computeTime( 
         offset,
         animateOptions.dampingDelay,
         animateOptions.delay
