@@ -7,8 +7,6 @@ import Prism from 'prismjs'
 import 'prismjs/components/prism-jsx'
 import 'prismjs/themes/prism.css'
 
-console.log(Prism)
-
 const div = (props) => {
   return (
     <div {...props}> 
