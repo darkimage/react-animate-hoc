@@ -4,42 +4,61 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
 }
 
+function isFunction(obj) { return typeof obj === "function" };
+function isArray(obj) { return Array.isArray(obj) };
+
+// function hasProperty(obj, key) { return Object.prototype.hasOwnProperty.call(obj, key) }
+
 export function withAnimated(Component, animateClass) {
+
+  const setProperty = (prop, props, defaultSet, arraySet) => {
+    if (isFunction(prop)) {
+      // pass also the css varible values
+      prop = prop(props)
+    }
+    if (prop) {
+      if (isArray(prop)) {
+        arraySet(prop)
+      } else {
+        defaultSet(prop)
+      }
+    }
+  }
+
   const withAnimated = function (props) {
     console.log(props)
     const classes = []
-    const cssKeyClasses = ['animation', 'delay', 'speed', 'duration', 'infinite']
     const animateData = { ...animateClass, ...(props.animatecss) }
-    for (const key of cssKeyClasses) {
-      if (Object.prototype.hasOwnProperty.call(animateData, key)) {
-        const value = animateData[key]
-        if (key !== 'animation' && key !== 'infinite') {
-          classes.push(`animate__${key}-${value}`)
-        }
-        if (key === 'infinite') {
-          if (value) {
-            classes.push(`animate__${key}`)
-          }
-        } else {
-          if (!Array.isArray(value)) {
-            classes.push(`animate__${value}`)
-          }
-        }
-      }
-    }
-    const { className, style, animatecss, ...rest } = props
-    const { animation, delay, speed, infinite, ...animateStyle } = animateData
+    const { animation, delay, speed, infinite, duration, ...animateStyle } = animateData
     const styleElem = { ...style, ...animateStyle }
-    if (Array.isArray(animation)) {
-      styleElem.animationName = animation.join(',')
-    }
+
+    setProperty(animation, props,
+      (value) => classes.push(`animate__${value}`),
+      (value) => styleElem.animationName = value.join(',')
+    );
+    setProperty(infinite, props,
+      () => classes.push(`animate__infinite`),
+      () => { throw 'infinite property cannot be an array!' }
+    )
+    setProperty(speed, props,
+      (value) => classes.push(`animate__${value}`),
+      (value) => styleElem.animationDuration = value.join(',')
+    )
+    setProperty(delay, props,
+      (value) => classes.push(`animate__delay-${value}`),
+      (value) => styleElem.animationDelay = value.join(',')
+    )
+    setProperty(duration, props,
+      (value) => classes.push(`animate__duration-${value}`),
+      (value) => styleElem.animationDuration = value.join(',')
+    )
+
+    const { className, style, animatecss, ...rest } = props
     return (
       <Component
         {...rest}
         style={styleElem}
-        className={`${className ? className : ''} ${
-          classes.length !== 0 ? 'animate__animated' : ''
-        } ${classes.join(' ')}`}
+        className={`${className ? className : ''} ${classes.length !== 0 ? 'animate__animated' : ''} ${classes.join(' ')}`}
       />
     )
   }
