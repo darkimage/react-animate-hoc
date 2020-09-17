@@ -7,23 +7,30 @@ function getDisplayName(WrappedComponent) {
 function isFunction(obj) { return typeof obj === "function" };
 function isArray(obj) { return Array.isArray(obj) };
 
-// function hasProperty(obj, key) { return Object.prototype.hasOwnProperty.call(obj, key) }
+function retriveAnimateVariables() {
+  const doc = getComputedStyle(document.documentElement)
+  return {
+    duration: doc.getPropertyValue("--animate-duration"),
+    delay: doc.getPropertyValue("--animate-delay"),
+    delay: doc.getPropertyValue("--animate-repeat"),
+  }
+}
+
+function setProperty(prop, props, defaultSet, arraySet) {
+  if (isFunction(prop)) {
+    prop = prop(props, retriveAnimateVariables())
+  }
+  if (prop) {
+    if (isArray(prop)) {
+      arraySet(prop)
+    } else {
+      defaultSet(prop)
+    }
+  }
+}
 
 export function withAnimated(Component, animateClass) {
 
-  const setProperty = (prop, props, defaultSet, arraySet) => {
-    if (isFunction(prop)) {
-      // pass also the css varible values
-      prop = prop(props)
-    }
-    if (prop) {
-      if (isArray(prop)) {
-        arraySet(prop)
-      } else {
-        defaultSet(prop)
-      }
-    }
-  }
 
   const withAnimated = function (props) {
     console.log(props)
