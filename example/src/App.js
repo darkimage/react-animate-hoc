@@ -51,9 +51,9 @@ const HoverDiv = withAnimated(div, {
   }
 })
 
-const HoverDivTest = function (props) {
+const HoverDivWrap = function (props) {
   const [hover, setHover] = useState();
-  return <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+  return <div className="hoverContainer" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
     <HoverDiv hover={hover} {...props}>{props.children}</HoverDiv>
   </div>
 }
@@ -134,6 +134,23 @@ const customCssExampleCode = `withAnimated(div,{
   aniamtionDelay: '6s' //css property that will get injected in the component style
 })`
 
+const functionExampleCode = `const AnimatedDiv = withAnimated(div, {
+  animation: (props) => {
+    if (props.hover) {
+      return 'bounceIn'
+    } else {
+      return 'bounceOut'
+    }
+  }
+});
+
+const HoverDiv = function (props) {
+  const [hover, setHover] = useState();
+  return <div className="hoverContainer" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <AnimatedDiv hover={hover} {...props}>{props.children}</AnimatedDiv>
+  </div>
+}`
+
 const columns = [
   {
     title: 'Key',
@@ -149,8 +166,8 @@ const columns = [
     width: 200,
     render: (value) => {
       const codes = [];
-      for (const code of  value.split(/\s/)) {
-        codes.push(<Code style={{margin: '0.1rem'}} code={code} />)
+      for (const [i,code] of value.split(/\s/).entries()) {
+        codes.push(<Code key={`code-${i}`} style={{margin: '0.1rem'}} code={code} />)
       }
       return (<div style={{ display: 'flex', flexWrap: 'wrap'}}>{codes}</div>)
     },
@@ -211,12 +228,15 @@ const App = () => {
         <MultipleAnim className="animateContainer">Multiple animations!!</MultipleAnim>
         <h2>Animate.css properties list</h2>
         <p>This is the complete list of supported options from Animate.css that you can supply to the hoc functions, remember that you can specify additional css properties by writing them in camel case.</p>
-        <p>You can also assign to each of this property a function, the parameters passed to the function are:</p> <Code code="(animateVariables, props) => {}"/> <p><strong>animateVariables</strong> contains an object with all the default css variables values of animate.css.</p>
+        <p>You can also assign to each of this property a function, the parameters passed to the function are:</p> <Code code="(props, animateCssVariables) => {}"/> <p><strong>animateCssVariables</strong> contains an object with all the default css variables values of animate.css.</p>
         <Code code={customCssExampleCode}/>
         <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={data} />
         <h2>Using <Code noPre code="withAnimatedGroup()"/> <Emoji emoji="🤔" /></h2>
         <h2>Advanced usage <Emoji emoji="🤓" /></h2>
-        <HoverDivTest className="animateContainer">Prova</HoverDivTest>
+        <p>Every property of the hoc can be set using a <strong>function</strong> here's a simple example showing how to set an animation using <Code noPre code="onMouseEnter" /> and <Code noPre code="onMouseLeave" /></p>
+        <Code code={functionExampleCode} />
+        <strong>Result:</strong>
+        <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
       </div>
     </AppContainer>
   )
