@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withAnimated} from 'react-animate-hoc'
 import 'animate.css'
 import { Head } from './typography-inject'
@@ -41,6 +41,22 @@ const Emoji = function (props) {
 
 const SwingInjsx = withAnimated(div);
 
+const HoverDiv = withAnimated(div, {
+  animation: (props) => {
+    if (props.hover) {
+      return 'bounceIn'
+    } else {
+      return 'bounceOut'
+    }
+  }
+})
+
+const HoverDivTest = function (props) {
+  const [hover, setHover] = useState();
+  return <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <HoverDiv hover={hover} {...props}>{props.children}</HoverDiv>
+  </div>
+}
 
 const Code = function (props) {
   const { className, ...rest } = props
@@ -200,6 +216,7 @@ const App = () => {
         <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={data} />
         <h2>Using <Code noPre code="withAnimatedGroup()"/> <Emoji emoji="🤔" /></h2>
         <h2>Advanced usage <Emoji emoji="🤓" /></h2>
+        <HoverDivTest className="animateContainer">Prova</HoverDivTest>
       </div>
     </AppContainer>
   )
