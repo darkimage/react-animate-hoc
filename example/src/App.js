@@ -62,9 +62,9 @@ const AnimatedGroup = withAnimatedGroup(function (props) {
   return <div {...props}>{props.children}</div> 
 }, {
   animation: 'flipInX',
-  dampingDelay: 0.1,
-  infinite: true,
-  wait: 2,
+  dampingDelay: 0.2,
+  speed: 2,
+  dampingSpeed: 0.5,
   loop: true
 })
 
@@ -75,13 +75,6 @@ const Code = function (props) {
   const code = <code className={`${className ? className : ''} ${props.language ? props.language : 'language-jsx'}`} {...style}>{`${props.code}`}</code>;
   return !props.noPre ? <pre className="NormalizeWhitespace" {...style}>{code}</pre> : code
 }
-
-const WaitUp = withAnimated(div,{
-  animation: 'bounceIn',
-  speed: 4,
-  infinite: true,
-  wait: 2
-})
 
 const AppContainer = withAnimated(styled.div`
   margin: 5% 25%;
@@ -168,6 +161,30 @@ const HoverDiv = function (props) {
   </div>
 }`
 
+const groupExampleCode = `import { render } from 'react-dom'
+
+//This is the animation group container
+const AnimatedGroup = withAnimatedGroup(function (props) {
+  return <div {...props}>{props.children}</div> 
+}, {
+  animation: 'flipInX', //the animation to play on each child (if not specified each child will play its own)
+  dampingDelay: 0.2, // controls how to scale the delay for each child
+  speed: 2, 
+  dampingSpeed: 0.5, // controls how to speed down (postive values) or speed up (negative values) the child animations
+  loop: true //automatically calculate the wait property for each child creating a seamless loop (experimental)
+})
+
+render(
+  <AnimatedGroup>
+    <AnimChild>I'm a flipping div</AnimChild>
+    <AnimChild>I'm a flipping div</AnimChild>
+    <AnimChild>I'm a flipping div</AnimChild>
+    <AnimChild>I'm a flipping div</AnimChild>
+  </AnimatedGroup>,
+  document.getElementById('root')
+)
+`;
+
 const columns = [
   {
     title: 'Key',
@@ -248,19 +265,22 @@ const App = () => {
         <p>You can also assign to each of this property a function, the parameters passed to the function are:</p> <Code code="(props, animateCssVariables) => {}"/> <p><strong>animateCssVariables</strong> contains an object with all the default css variables values of animate.css.</p>
         <Code code={customCssExampleCode}/>
         <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={data} />
-        <h2>Using <Code noPre code="withAnimatedGroup()"/> <Emoji emoji="🤔" /></h2>
-        <h2>Advanced usage <Emoji emoji="🤓" /></h2>
-        <p>Every property of the hoc can be set using a <strong>function</strong> here's a simple example showing how to set an animation using <Code noPre code="onMouseEnter" /> and <Code noPre code="onMouseLeave" /></p>
-        <Code code={functionExampleCode} />
-        <strong>Result:</strong>
-        <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
+        <h2>Using <Code noPre code="withAnimatedGroup()" /> <Emoji emoji="🤔" /></h2>
+        <p>This hoc share the same properties of <Code noPre code="withAnimated()" /> but as well introduces some other properties to better control the animation flow of a group <strong>withAnimated</strong> children</p>
+        <p>Here's a simple example showing how to use some of this newly introduced properties to create a cascaded animatio</p>
+        <Code code={groupExampleCode}></Code>
         <AnimatedGroup>
           <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
           <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
           <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
           <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
         </AnimatedGroup>
-        <WaitUp>Prova</WaitUp>
+        <h2>Advanced usage <Emoji emoji="🤓" /></h2>
+        <p>Every property of the hoc can be set using a <strong>function</strong> here's a simple example showing how to set an animation using <Code noPre code="onMouseEnter" /> and <Code noPre code="onMouseLeave" /></p>
+        <Code code={functionExampleCode} />
+        <strong>Result:</strong>
+        <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
+        {/* <WaitUp>Prova</WaitUp> */} 
       </div>
     </AppContainer>
   )
