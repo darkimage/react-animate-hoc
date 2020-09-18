@@ -17,6 +17,10 @@ body {
   justify-content: center;
 }
 
+.animateGroup .animateContainer {
+  margin-top: 0.2rem;
+}
+
 .hoverContainer {
   border-radius: 10px;
   border: 2px solid #b9b9b9;
