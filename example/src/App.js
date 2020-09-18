@@ -15,6 +15,8 @@ const div = (props) => {
     </div>)
 }
 
+const AnimateDivChild = withAnimated(div);
+
 const BounceIn = withAnimated(div,{
     animation: 'bounceIn',
     infinite: true
@@ -223,11 +225,23 @@ const data = [
     key: '1'
   },
   {
-    prop: 'duration:',
-    data: 'int string Array<string> Array<int> Function',
+    prop: 'speed:',
+    data: 'Number string Array<string> Array<Number> Function',
     description: <span>The duration (length) of the animation, if in animate.css doesn't exist a class with the duration specified by this property then the <strong>animation-duration</strong> property is injected directly in the style of the wrapped element</span>,
     key: '2'
   },
+  {
+    prop: 'delay:',
+    data: 'Number string Array<string> Array<Number> Function',
+    description: 'The time to wait before starting to play the animation',
+    key: '3'
+  },
+  {
+    prop: 'wait:',
+    data: 'Number',
+    description: <span>The time in seconds to wait between repeats of the animation <strong>(Implemented through JS, since it's currently not possible with pure CSS)</strong></span>,
+    key: '4'
+  }
 ];
 
 const App = () => {
@@ -267,13 +281,14 @@ const App = () => {
         <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={data} />
         <h2>Using <Code noPre code="withAnimatedGroup()" /> <Emoji emoji="🤔" /></h2>
         <p>This hoc share the same properties of <Code noPre code="withAnimated()" /> but as well introduces some other properties to better control the animation flow of a group <strong>withAnimated</strong> children</p>
-        <p>Here's a simple example showing how to use some of this newly introduced properties to create a cascaded animatio</p>
+        <p>Here's a simple example showing how to use some of this newly introduced properties to create a cascaded animation:</p>
         <Code code={groupExampleCode}></Code>
-        <AnimatedGroup>
-          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
-          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
-          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
-          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
+        <strong>Result:</strong>
+        <AnimatedGroup className="animateGroup">
+          <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
+          <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
+          <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
+          <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
         </AnimatedGroup>
         <h2>Advanced usage <Emoji emoji="🤓" /></h2>
         <p>Every property of the hoc can be set using a <strong>function</strong> here's a simple example showing how to set an animation using <Code noPre code="onMouseEnter" /> and <Code noPre code="onMouseLeave" /></p>
