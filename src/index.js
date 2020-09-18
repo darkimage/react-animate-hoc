@@ -119,7 +119,8 @@ export function withAnimated(Component, animateClass) {
 
 export function withAnimatedGroup(Component, animateOptions) {
   const computeTime = (offset, damping, startOffset) => {
-    const sec = offset * (damping !== undefined ? damping : 1) + (startOffset || 0)
+    const currDamping = Math.abs(damping !== undefined ? damping : 1)
+    var sec = (damping > 0 ? offset : 1/(offset+1)) * currDamping + (startOffset || 0);
     return sec
   }
   const calculateTotalWait = (props) => {
@@ -131,7 +132,7 @@ export function withAnimatedGroup(Component, animateOptions) {
       if (i === 0) {
         wait += currSpeed + currWait; 
       } else {
-        wait += (currWait + currSpeed ) - wait; 
+        wait += (currWait + currSpeed ) < wait ? 0 : (currWait + currSpeed ) - wait; 
       }
     }
     return wait
