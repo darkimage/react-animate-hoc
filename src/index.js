@@ -141,7 +141,7 @@ export function withAnimatedGroup(Component, animateOptions) {
     const constructAnimCss = (offset) => {
       const css = {
         animation: animateOptions.animation,
-        infinite: animateOptions.infinite,
+        infinite: animateOptions.loop ? true : animateOptions.infinite,
         delay: computeTime( 
           offset,
           animateOptions.dampingDelay,
