@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { withAnimated} from 'react-animate-hoc'
+import { withAnimated, withAnimatedGroup} from 'react-animate-hoc'
 import 'animate.css'
 import { Head } from './typography-inject'
 import styled from 'styled-components'
@@ -58,6 +58,16 @@ const HoverDivWrap = function (props) {
   </div>
 }
 
+const AnimatedGroup = withAnimatedGroup(function (props) {
+  return <div {...props}>{props.children}</div> 
+}, {
+  animation: 'flipInX',
+  dampingDelay: 0.1,
+  infinite: true,
+  wait: 2,
+  loop: true
+})
+
 const Code = function (props) {
   const { className, ...rest } = props
   var style = rest;
@@ -65,6 +75,13 @@ const Code = function (props) {
   const code = <code className={`${className ? className : ''} ${props.language ? props.language : 'language-jsx'}`} {...style}>{`${props.code}`}</code>;
   return !props.noPre ? <pre className="NormalizeWhitespace" {...style}>{code}</pre> : code
 }
+
+const WaitUp = withAnimated(div,{
+  animation: 'bounceIn',
+  speed: 4,
+  infinite: true,
+  wait: 2
+})
 
 const AppContainer = withAnimated(styled.div`
   margin: 5% 25%;
@@ -237,6 +254,13 @@ const App = () => {
         <Code code={functionExampleCode} />
         <strong>Result:</strong>
         <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
+        <AnimatedGroup>
+          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
+          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
+          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
+          <BounceIn className="animateContainer">I'm a flipping div</BounceIn>
+        </AnimatedGroup>
+        <WaitUp>Prova</WaitUp>
       </div>
     </AppContainer>
   )
