@@ -8,7 +8,7 @@ import 'prismjs/components/prism-jsx'
 import 'prismjs/themes/prism.css'
 import Table from 'rc-table';
 
-const div = (props) => {
+const div = ({ hover, ...props }) => {
   return (
     <div {...props}> 
       {props.children}
@@ -73,13 +73,13 @@ const AnimatedGroup = withAnimatedGroup(function (props) {
 const MultipleAnimChild = withAnimated(div);
 
 const MultipleAnimGroup = withAnimatedGroup(div, {
-  animation: ['rollIn', 'rollOut'],
+  animation: ['fadeInLeft', 'fadeOutRight'],
   loop: true,
-  delay: [0, 1],
-  speed: [0.2, 1],
+  delay: [0, 2],
+  speed: [0.8, 1],
   dampingDelay: 0.2,
+  opacity: 0,
   fillMode: ['forwards', 'forwards'],
-  opacity: 0
 })
 
 const Code = function (props) {
