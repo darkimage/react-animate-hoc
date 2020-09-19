@@ -35,13 +35,10 @@ export function withAnimated(Component, animateClass) {
     // console.log(props)
     const classes = []
     const animateData = { ...animateClass, ...(props.animatecss) }
-    const { animation, delay, speed, infinite, wait, loop, ...animateStyle } = animateData
+    const { animation, delay, speed, infinite, wait, loop, fillMode, ...animateStyle } = animateData
     const styleElem = { ...style, ...animateStyle }
     const [removeInfinite, setRemoveInfinite] = useState(false)
     const animVariables = retriveAnimateVariables()
-    // var delayWaitClass = ''; 
-    // var delayWaitCss = ''; 
-    // var removeInfinite = false;
 
     setProperty(animation, props,
       (value) => {
@@ -49,8 +46,13 @@ export function withAnimated(Component, animateClass) {
           classes.push(`animate__${value}`)
         }
       },
-      (value) => styleElem.animationName = value.join(',')
+      (value) => {
+        if (!wait) {
+          styleElem.animationName = value.join(',')
+        }
+      }
     );
+
     setProperty(infinite, props,
       () => {
         if (!wait) {
@@ -58,7 +60,8 @@ export function withAnimated(Component, animateClass) {
         }
       },
       () => { throw 'infinite property cannot be an array!' }
-    )
+    );
+
     setProperty(speed, props,
       (value) => {
         if (['slow', 'slower', 'fast', 'faster'].includes(value)) {
@@ -69,8 +72,16 @@ export function withAnimated(Component, animateClass) {
           styleElem.animationDuration = `${value}s`
         }
       },
-      (value) => styleElem.animationDuration = value.join(',')
-    )
+      (value) => {
+        const arr = value.map((val) => {
+          if (typeof value != "string") {
+            return `${val}s`
+          }
+        })
+        styleElem.animationDuration = arr.join(',')
+      }
+    );
+
     setProperty(delay, props,
       (value) => {
         if (['2s', '3s', '4s', '5s', 2, 3, 4, 5].includes(value)) {
@@ -80,14 +91,26 @@ export function withAnimated(Component, animateClass) {
           classes.push(`animate__delay-${value}`);
         } else {
           if (typeof value == "string") {
-            styleElem.animationDelay = val;ue
+            styleElem.animationDelay = val; ue
           } else {
             styleElem.animationDelay = `${value}s`;
           }
         }
       },
-      (value) => styleElem.animationDelay = value.join(',')
-    )
+      (value) => {
+        const arr = value.map((val) => {
+          if (typeof value != "string") {
+            return `${val}s`
+          }
+        })
+        styleElem.animationDelay = arr.join(',')
+      }
+    );
+
+    setProperty(fillMode, props,
+      (value) => styleElem.animationFillMode = value,
+      (value) => styleElem.animationFillMode = value.join(',')
+    );
 
     useEffect(() => {
       if (infinite && wait) {
@@ -98,12 +121,19 @@ export function withAnimated(Component, animateClass) {
           }, 100)
         }, (loop ? wait : wait + (speed || animVariables.duration) + (delay || 0)) * 1000)
       }
-    },[])
+    }, []);
     
-    const { className, style, animatecss, ...rest } = props
+    const { className, style, animatecss, ...rest } = props;
 
-    const cssWaitInfinite = !removeInfinite ? `animate__${animation}` : ''
-    const animateToggle = wait ? `animate__animated ${cssWaitInfinite}` : `${classes.length !== 0 ? 'animate__animated' : ''}`;
+    const singleAnim = !isArray(animation) ? `animate__animated animate__${animation}` : 'animate__animated';
+    const cssWaitInfinite = !removeInfinite ? singleAnim : '';
+    const animateToggle = wait ? cssWaitInfinite : `${classes.length !== 0 ? 'animate__animated' : ''}`;
+
+    const multiAnim = isArray(animation) ? animation.join(',') : '';
+    styleElem.animationName = !removeInfinite ? multiAnim : '';
+
+    const multiFill = isArray(fillMode) ? fillMode.join(',') : '';
+    styleElem.animationFillMode = !removeInfinite ? multiFill : '';
 
     return (
       <Component
@@ -118,17 +148,46 @@ export function withAnimated(Component, animateClass) {
 }
 
 export function withAnimatedGroup(Component, animateOptions) {
-  const computeTime = (offset, damping, startOffset) => {
-    const currDamping = Math.abs(damping !== undefined ? damping : 1)
-    var sec = (damping > 0 ? offset : 1/(offset+1)) * currDamping + (startOffset || 0);
+
+  const computeTime = (offset, damping, startOffset, collapse = false) => {
+    const calcTime = (offset, damping, startOffset) => {
+      const currDamping = Math.abs(damping !== undefined ? damping : 1);
+      return (damping > 0 ? offset : 1 / (offset + 1)) * currDamping + (startOffset || 0)
+    }
+
+    var sec;
+    if (isArray(damping)) {
+      sec = [];
+      for (const dampingValue of damping) {
+        sec.push(calcTime(offset, dampingValue, startOffset))
+      }
+    } else if (isArray(startOffset)) {
+      sec = [];
+      for (const startOffsetValue of startOffset) {
+        sec.push(calcTime(offset, damping, startOffsetValue))
+      }
+    } else if (isArray(startOffset) && isArray(damping)) {
+      sec = [];
+      for (const [i,dampingValue] of damping.entries()) {
+        const startOffsetValue = startOffset[i];
+        sec.push(calcTime(offset, dampingValue, startOffsetValue))
+      }
+    }else {
+      sec = calcTime(offset, damping, startOffset);
+    }
+    if ((isArray(startOffset) || isArray(damping)) && collapse) {
+      return sec.reduce((a, b) => a+b, 0);
+    }
+    console.log(sec)
     return sec
   }
+
   const calculateTotalWait = (props) => {
     var wait = 0;
     const animateVariables = retriveAnimateVariables();
     for (let i = 0; i < props.children.length; i++) {
-      var currWait = computeTime(i, animateOptions.dampingDelay, animateOptions.delay);
-      const currSpeed = computeTime(i, animateOptions.dampingSpeed || 0, (animateOptions.speed || animateVariables.duration));
+      const currWait = computeTime(i, animateOptions.dampingDelay, animateOptions.delay, true);
+      const currSpeed = computeTime(i, animateOptions.dampingSpeed || 0, (animateOptions.speed || animateVariables.duration), true);
       if (i === 0) {
         wait += currSpeed + currWait; 
       } else {
@@ -140,8 +199,8 @@ export function withAnimatedGroup(Component, animateOptions) {
 
   const withAnimatedChildren = (props) => {
     const constructAnimCss = (offset) => {
+      const { infinite, delay, speed, wait, ...options } = animateOptions
       const css = {
-        animation: animateOptions.animation,
         infinite: animateOptions.loop ? true : animateOptions.infinite,
         delay: computeTime( 
           offset,
@@ -154,7 +213,7 @@ export function withAnimatedGroup(Component, animateOptions) {
           animateOptions.speed
         ),
         wait: animateOptions.loop ? calculateTotalWait(props) : animateOptions.wait,
-        loop: animateOptions.loop
+        ...options
       }
       Object.keys(css).forEach((key) => css[key] === undefined && delete css[key])
       return css
