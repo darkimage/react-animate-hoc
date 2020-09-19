@@ -70,6 +70,18 @@ const AnimatedGroup = withAnimatedGroup(function (props) {
   loop: true
 })
 
+const MultipleAnimChild = withAnimated(div);
+
+const MultipleAnimGroup = withAnimatedGroup(div, {
+  animation: ['rollIn', 'rollOut'],
+  loop: true,
+  delay: [0, 1],
+  speed: [0.2, 1],
+  dampingDelay: 0.2,
+  fillMode: ['forwards', 'forwards'],
+  opacity: 0
+})
+
 const Code = function (props) {
   const { className, ...rest } = props
   var style = rest;
@@ -281,7 +293,7 @@ const App = () => {
         <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={data} />
         <h2>Using <Code noPre code="withAnimatedGroup()" /> <Emoji emoji="🤔" /></h2>
         <p>This hoc share the same properties of <Code noPre code="withAnimated()" /> but as well introduces some other properties to better control the animation flow of a group <strong>withAnimated</strong> children</p>
-        <p>Here's a simple example showing how to use some of this newly introduced properties to create a cascaded animation:</p>
+        <p>Here's a simple example showing how to use some of this newly introduced properties to create a looped cascaded animation:</p>
         <Code code={groupExampleCode}></Code>
         <strong>Result:</strong>
         <AnimatedGroup className="animateGroup">
@@ -290,6 +302,12 @@ const App = () => {
           <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
           <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
         </AnimatedGroup>
+        <h4>Working with multiple animation</h4>
+        <MultipleAnimGroup className="animateGroup">
+          <MultipleAnimChild className="animateContainer">Multiple Animations</MultipleAnimChild>
+          <MultipleAnimChild className="animateContainer">Multiple Animations</MultipleAnimChild>
+          <MultipleAnimChild className="animateContainer">Multiple Animations</MultipleAnimChild>
+        </MultipleAnimGroup>
         <h2>Advanced usage <Emoji emoji="🤓" /></h2>
         <p>Every property of the hoc can be set using a <strong>function</strong> here's a simple example showing how to set an animation using <Code noPre code="onMouseEnter" /> and <Code noPre code="onMouseLeave" /></p>
         <Code code={functionExampleCode} />
