@@ -32,7 +32,6 @@ function setProperty(prop, props, defaultSet = (val) => val, arraySet = (val) =>
 export function withAnimated(Component, animateClass) {
 
   const withAnimated = function (props) {
-    // console.log(props)
     const classes = []
     const animateData = { ...animateClass, ...(props.animatecss) }
     const { animation, delay, speed, infinite, wait, loop, fillMode, ...animateStyle } = animateData
@@ -113,7 +112,7 @@ export function withAnimated(Component, animateClass) {
     );
 
     useEffect(() => {
-      if (infinite && wait) {
+      if ((infinite || loop) && wait) {
         setInterval(removeInfinite => {
           setRemoveInfinite(!removeInfinite)
           setTimeout(() => {
@@ -127,7 +126,7 @@ export function withAnimated(Component, animateClass) {
 
     const singleAnim = !isArray(animation) ? `animate__animated animate__${animation}` : 'animate__animated';
     const cssWaitInfinite = !removeInfinite ? singleAnim : '';
-    const animateToggle = wait ? cssWaitInfinite : `${classes.length !== 0 ? 'animate__animated' : ''}`;
+    const animateToggle = wait ? cssWaitInfinite : `animate__animated`;
 
     const multiAnim = isArray(animation) ? animation.join(',') : '';
     styleElem.animationName = !removeInfinite ? multiAnim : '';
@@ -178,7 +177,6 @@ export function withAnimatedGroup(Component, animateOptions) {
     if ((isArray(startOffset) || isArray(damping)) && collapse) {
       return sec.reduce((a, b) => a+b, 0);
     }
-    console.log(sec)
     return sec
   }
 
