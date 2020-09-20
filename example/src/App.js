@@ -6,13 +6,15 @@ import styled from 'styled-components'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-jsx'
 import 'prismjs/themes/prism.css'
-import Table from 'rc-table';
+import Table from 'rc-table'
+import { ReactComponent as SocialBg } from './social_bg.svg'
+import { ReactComponent as SeeOnGithub } from './see_it_on_github.svg'
+import { ReactComponent as GithubMark } from './github_mark.svg'
+
+// Example components
 
 const div = ({ hover, ...props }) => {
-  return (
-    <div {...props}> 
-      {props.children}
-    </div>)
+  return (<div {...props}/>)
 }
 
 const AnimateDivChild = withAnimated(div);
@@ -56,12 +58,12 @@ const HoverDiv = withAnimated(div, {
 const HoverDivWrap = function (props) {
   const [hover, setHover] = useState();
   return <div className="hoverContainer" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-    <HoverDiv hover={hover} {...props}>{props.children}</HoverDiv>
+    <HoverDiv hover={hover} {...props}/>
   </div>
 }
 
 const AnimatedGroup = withAnimatedGroup(function (props) {
-  return <div {...props}>{props.children}</div> 
+  return <div {...props}/> 
 }, {
   animation: 'flipInX',
   dampingDelay: 0.2,
@@ -82,6 +84,106 @@ const MultipleAnimGroup = withAnimatedGroup(div, {
   fillMode: ['forwards', 'forwards'],
 })
 
+// Page contstruction components
+const SocialIcon = styled(function (props) {
+  return <div  {...props}>
+    <SocialBg className="bg"/>
+    {props.children}
+  </div>
+})`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -75px;
+  right: -75px;
+  width: 200px;
+  height: 200px;
+
+  @media only screen and (max-width: 425px){
+    transform: scale(0.6);
+    top: -85px;
+    right: -85px;
+  }
+
+  @media only screen and (max-width: 768px){
+    transform: scale(0.8);
+    top: -75px;
+    right: -75px;
+  }
+
+  & > .logo {
+    position: absolute;
+    right: 78px;
+    top: 79px;
+    width: 70px;
+    height: 70px;
+
+    & path {
+      fill: #fff
+    }
+  }
+
+  & > .bg {
+    position: absolute;
+    z-index: -1;
+    animation: rotate 60s linear infinite;
+    & path {
+      fill: #4078c0;
+    }
+  }
+
+  & > .text {
+    position: absolute;
+    top: 76px;
+    right: -4px;
+    transform: scale(0.8);
+    fill: #fff;
+  }
+
+`;
+
+const BetaBanner = withAnimated(
+  styled.div`
+    opacity: 0;
+    & > * {
+      margin: 0.2rem;
+      color: #69c6f3;
+    }
+  `, {
+  delay: [0, 2],
+  speed: [1, 1],
+  animation: ['fadeInLeft', 'fadeOutRight'],
+  loop: true,
+  wait: 3,
+  fillMode: ['forwards', 'forwards'],
+});
+
+const BetaBannerContainer = styled.div`
+  position: absolute;
+  top: 41px;
+  left: -141px;
+  transform: rotate(-45deg);
+  border: 5px solid;
+  border-color: #c9e3ff;
+  min-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media only screen and (max-width: 768px){
+    top: 21px;
+    left: -161px;
+  }
+
+  @media only screen and (max-width: 425px){
+    top: 11px;
+    left: -171px;
+    font-size: medium;
+    border-width: 2px;
+  }
+`;
+
 const Code = function (props) {
   const { className, ...rest } = props
   var style = rest;
@@ -91,17 +193,22 @@ const Code = function (props) {
 }
 
 const AppContainer = withAnimated(styled.div`
-  margin: 5% 25%;
+  padding: 5% 25%;
+  overflow: hidden;
+  position: relative;
   @media only screen and (max-width: 768px){
-    margin: 5% 15%;
+    padding: 5% 15%;
   }
   @media only screen and (max-width: 425px){
-    margin: 5% 8%;
+    padding: 5% 8%;
   }
 `, {
   animation: "fadeIn",
   animationDuration: "2s"
 });
+
+
+//Code Examples
 
 const codeWithAnimated = 'withAnimated()';
 const codeWithAnimatedGroup = 'withAnimatedGroup()';
@@ -144,19 +251,19 @@ const styledExampleCode = `const StyledDiv = withAnimated(styled.div\`
 \`, {
   animation: 'tada',
   infinite: true
-})`
+})`;
 
 const multipleExampleCode = `const MultipleAnim = withAnimated((props) => {
-  return (<div {...props}>{props.children}</div>)
+  return <div {...props}/>
 }, {
   animation: ['bounce', 'flash'],
   infinite: true
-})`
+})`;
 
 const customCssExampleCode = `withAnimated(div,{
   animation: 'bounce', //normal library property
-  aniamtionDelay: '6s' //css property that will get injected in the component style
-})`
+  animationDelay: '6s' //css property that will get injected in the component style
+})`;
 
 const functionExampleCode = `const AnimatedDiv = withAnimated(div, {
   animation: (props) => {
@@ -171,15 +278,15 @@ const functionExampleCode = `const AnimatedDiv = withAnimated(div, {
 const HoverDiv = function (props) {
   const [hover, setHover] = useState();
   return <div className="hoverContainer" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-    <AnimatedDiv hover={hover} {...props}>{props.children}</AnimatedDiv>
+    <AnimatedDiv hover={hover} {...props}/>
   </div>
-}`
+}`;
 
 const groupExampleCode = `import { render } from 'react-dom'
 
 //This is the animation group container
 const AnimatedGroup = withAnimatedGroup(function (props) {
-  return <div {...props}>{props.children}</div> 
+  return <div {...props}/>
 }, {
   animation: 'flipInX', //the animation to play on each child (if not specified each child will play its own)
   dampingDelay: 0.2, // controls how to scale the delay for each child
@@ -196,8 +303,32 @@ render(
     <AnimChild>I'm a flipping div</AnimChild>
   </AnimatedGroup>,
   document.getElementById('root')
-)
-`;
+)`;
+
+const groupMultipleAnimExampleCode = `import { render } from 'react-dom'
+
+const MultipleAnimChild = withAnimated(div);
+
+const MultipleAnimGroup = withAnimatedGroup(div, {
+  animation: ['fadeInLeft', 'fadeOutRight'],
+  loop: true,
+  delay: [0, 2],
+  speed: [0.8, 1],
+  dampingDelay: 0.2, //can be an also an array
+  opacity: 0, //used to set the initial state as not visible since the animations we are using control the opacity
+  fillMode: ['forwards', 'forwards'], // see https://www.w3schools.com/cssref/css3_pr_animation-fill-mode.asp 
+});
+
+render(
+  <AnimatedGroup>
+    <AnimChild>I'm a flipping div</AnimChild>
+    <AnimChild>I'm a flipping div</AnimChild>
+    <AnimChild>I'm a flipping div</AnimChild>
+    <AnimChild>I'm a flipping div</AnimChild>
+  </AnimatedGroup>,
+  document.getElementById('root')
+)`;
+
 
 const columns = [
   {
@@ -233,7 +364,7 @@ const data = [
   {
     prop: 'animation:',
     data: 'string Array<string> Function',
-    description: [<span key='d1-0'>Animation keybindings name, you can see all the animation names in the official </span>, <a key="d1-1" href="https://animate.style/">Animate.css</a>, <span key='d1-2'> website. If an array is specified multiple animation are added using the </span>, <strong key="d1-3">animation-name</strong>,<span key='d1-4'> css property</span>],
+    description: [<span key='d1-0'>Animation keybindings name, you can see all the animation names in the official </span>, <a key="d1-1" href="https://animate.style/">Animate.css</a>, <span key='d1-2'> website. If an array is specified multiple animation are added using the </span>, <strong key="d1-3">animation-name</strong>, <span key='d1-4'> css property</span>],
     key: '1'
   },
   {
@@ -253,19 +384,36 @@ const data = [
     data: 'Number',
     description: <span>The time in seconds to wait between repeats of the animation <strong>(Implemented through JS, since it's currently not possible with pure CSS)</strong></span>,
     key: '4'
+  },
+  {
+    prop: 'fillMode:',
+    data: 'string Array<string>',
+    description: 'Shorthand for animationFillMode (animation-fill-mode)',
+    key: '5'
+  },
+  {
+    prop: 'infinite:',
+    data: 'boolean',
+    description: <span>Set the animation to infinite reapeats, if <strong>wait</strong> is also specified the aniation is restarted after the specified time</span>,
+    key: '6'
   }
 ];
 
 const App = () => {
   return (
     <AppContainer>
+      <SocialIcon>
+        <SeeOnGithub className="text" />
+        <GithubMark className="logo"/>
+      </SocialIcon>
+      <BetaBannerContainer>
+        <BetaBanner><h4>BETA</h4></BetaBanner>
+      </BetaBannerContainer>
       <Head>
         <title>React Animate HOC</title>
       </Head>
       <h1>React Animate <a href="https://reactjs.org/docs/higher-order-components.html">HOC</a></h1>
-      <p>
-        This React library is designed to leverage the awesome <a href="https://animate.style/">animate.css</a> with little work, simply by wrapping your components using either <Code noPre code={codeWithAnimated} /> or <Code noPre code={codeWithAnimatedGroup}/>
-      </p>
+      <p>This React library is designed to leverage the awesome <a href="https://animate.style/">animate.css</a> with little work, simply by wrapping your components using either <Code noPre code={codeWithAnimated} /> or <Code noPre code={codeWithAnimatedGroup}/></p>
       <div className="examples">
         <h2>Basic Example</h2>
         <Code code={exampleCode}/>
@@ -303,6 +451,9 @@ const App = () => {
           <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
         </AnimatedGroup>
         <h4>Working with multiple animation</h4>
+        <p><Code noPre code="withAnimatedGroup()" /> works also with multiple animation, you have to just specify the correct array for the properties you are interested, and if you are using <Code noPre code="loop: true" /> the  <strong>wait property</strong> is calculated automatically for each child taking into account all the <strong>animation,duration and delays</strong>:</p>
+        <Code code={groupMultipleAnimExampleCode} />
+        <strong>Result:</strong>
         <MultipleAnimGroup className="animateGroup">
           <MultipleAnimChild className="animateContainer">Multiple Animations</MultipleAnimChild>
           <MultipleAnimChild className="animateContainer">Multiple Animations</MultipleAnimChild>
@@ -313,9 +464,8 @@ const App = () => {
         <Code code={functionExampleCode} />
         <strong>Result:</strong>
         <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
-        {/* <WaitUp>Prova</WaitUp> */} 
       </div>
-    </AppContainer>
+  </AppContainer>
   )
 } 
 
