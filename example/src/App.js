@@ -490,7 +490,7 @@ const App = () => {
         <strong>Result:</strong>
         <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
       </div>
-      <CopyrightFooter>Created by Luca Faggion, MIT License.</CopyrightFooter>
+      <CopyrightFooter>Created by <a href="https://github.com/darkimage">Luca Faggion</a>, MIT License.</CopyrightFooter>
   </AppContainer>
   )
 } 
