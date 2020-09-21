@@ -11,6 +11,11 @@ import { ReactComponent as SocialBg } from './social_bg.svg'
 import { ReactComponent as SeeOnGithub } from './see_it_on_github.svg'
 import { ReactComponent as GithubMark } from './github_mark.svg'
 
+const breakPoints = {
+  tablet: '768px',
+  mobile: '425px'
+}
+
 // Example components
 
 const div = ({ hover, ...props }) => {
@@ -100,13 +105,13 @@ const SocialIcon = styled(function (props) {
   width: 200px;
   height: 200px;
 
-  @media only screen and (max-width: 425px){
+  @media only screen and (max-width: ${breakPoints.mobile}){
     transform: scale(0.6);
     top: -85px;
     right: -85px;
   }
 
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: ${breakPoints.tablet}){
     transform: scale(0.8);
     top: -75px;
     right: -75px;
@@ -171,12 +176,12 @@ const BetaBannerContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: ${breakPoints.tablet}){
     top: 21px;
     left: -161px;
   }
 
-  @media only screen and (max-width: 425px){
+  @media only screen and (max-width: ${breakPoints.mobile}){
     top: 11px;
     left: -171px;
     font-size: medium;
@@ -192,15 +197,31 @@ const Code = function (props) {
   return !props.noPre ? <pre className="NormalizeWhitespace" {...style}>{code}</pre> : code
 }
 
+const CopyrightFooter = styled.div`
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.1rem;
+  width: 100%;
+  left: 0;
+  font-size: 12px;
+  color: rgba(0,0,0,0.4);
+`;
+
 const AppContainer = withAnimated(styled.div`
   padding: 5% 25%;
   overflow: hidden;
   position: relative;
-  @media only screen and (max-width: 768px){
-    padding: 5% 15%;
+
+  @media only screen and (max-width: ${breakPoints.tablet}){
+    padding: 0% 15%;
+    padding-bottom: 4rem;
   }
-  @media only screen and (max-width: 425px){
-    padding: 5% 8%;
+  @media only screen and (max-width: ${breakPoints.mobile}){
+    padding: 10% 8%;
+    padding-bottom: 4rem;
   }
 `, {
   animation: "fadeIn",
@@ -469,6 +490,7 @@ const App = () => {
         <strong>Result:</strong>
         <HoverDivWrap className="animateContainer">I bounce on Hover</HoverDivWrap>
       </div>
+      <CopyrightFooter>Created by Luca Faggion, MIT License.</CopyrightFooter>
   </AppContainer>
   )
 } 
