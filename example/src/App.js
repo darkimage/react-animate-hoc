@@ -112,7 +112,7 @@ const SocialIcon = styled(function (props) {
     right: -75px;
   }
 
-  & > .logo {
+  & .logo {
     position: absolute;
     right: 78px;
     top: 79px;
@@ -124,7 +124,7 @@ const SocialIcon = styled(function (props) {
     }
   }
 
-  & > .bg {
+  & .bg {
     position: absolute;
     z-index: -1;
     animation: rotate 60s linear infinite;
@@ -133,7 +133,7 @@ const SocialIcon = styled(function (props) {
     }
   }
 
-  & > .text {
+  & .text {
     position: absolute;
     top: 76px;
     right: -4px;
@@ -399,12 +399,16 @@ const data = [
   }
 ];
 
+const repoUrl = "https://github.com/darkimage/react-animate-hoc";
+
 const App = () => {
   return (
     <AppContainer>
       <SocialIcon>
         <SeeOnGithub className="text" />
-        <GithubMark className="logo"/>
+        <a href={repoUrl}>
+          <GithubMark className="logo" />
+        </a>
       </SocialIcon>
       <BetaBannerContainer>
         <BetaBanner><h4>BETA</h4></BetaBanner>
