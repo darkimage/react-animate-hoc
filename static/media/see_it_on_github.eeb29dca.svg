@@ -1,0 +1,10 @@
+<svg width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+	<defs>
+		<path id="text_0_path" d="M0,0c0,27.64,22.36,50,50,50s50-22.36,50-50"/>
+	</defs>
+	<g fontFamily="Rosario" fontSize="12px">
+		<text textAnchor="middle">
+			<textPath xlinkHref="#text_0_path" startOffset="30%">See it on Github</textPath>
+		</text>
+	</g>
+</svg>
