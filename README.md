@@ -10,6 +10,9 @@
 npm install --save react-animate-hoc
 ```
 
+## Demo Example and Documentation
+you can watch the examples and the documentaion at the **[DEMO WEBSITE](https://darkimage.github.io/react-animate-hoc/)**
+
 ## Basic Usage
 
 ```jsx
