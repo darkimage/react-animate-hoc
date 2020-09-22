@@ -233,7 +233,9 @@ const AppContainer = withAnimated(styled.div`
 
 const codeWithAnimated = 'withAnimated()';
 const codeWithAnimatedGroup = 'withAnimatedGroup()';
-const exampleCode = `// Simple component that render a div 
+const exampleCode = `import 'animate.css' //Dont forget to import aniamte.css it's required 
+
+// Simple component that render a div 
 // (style and className are necessary for the library to work)
 const div = function (props) {
   return (
