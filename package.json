@@ -1,6 +1,6 @@
 {
   "name": "@darkimage/react-animate-hoc",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Hoc pattern for animate components using the aweasome animate.css library",
   "author": "darkimage",
   "license": "MIT",
