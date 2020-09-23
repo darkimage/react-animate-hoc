@@ -1,3 +1,5 @@
+//LICENSE FOR FONT-AWEASOME-FREE svg icons - https://fontawesome.com/license
+
 import React, { useState } from 'react'
 import { withAnimated, withAnimatedGroup} from 'react-animate-hoc'
 import 'animate.css'
@@ -10,6 +12,7 @@ import Table from 'rc-table'
 import { ReactComponent as SocialBg } from './social_bg.svg'
 import { ReactComponent as SeeOnGithub } from './see_it_on_github.svg'
 import { ReactComponent as GithubMark } from './github_mark.svg'
+import { ReactComponent as WarnCircle } from './exclamation-circle-solid.svg'
 
 const breakPoints = {
   tablet: '768px',
@@ -210,6 +213,71 @@ const CopyrightFooter = styled.div`
   color: rgba(0,0,0,0.4);
 `;
 
+const NoteBox = styled.div`
+  position: relative;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 20px;
+  width: 100%;
+  padding-top: 2rem;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+
+  &:before {
+    position: absolute;
+    left: calc(0.4rem + 32px);
+    top: 0.2rem;
+    font-weight: 900;
+    content: ${props => {
+      if (props.type) {
+        var infoMsg = props.type.toLowerCase();
+        return `"${infoMsg.charAt(0).toUpperCase() + infoMsg.slice(1)}"`;
+      }
+    }};
+  }
+
+  *:not(svg) {
+    padding-left: 0.5rem;
+  }
+
+  & > .icon {
+    position: absolute;
+    left: 0.2rem;
+    top: 0.2rem;
+    width: 32px;
+  }
+
+  ${props => {
+    var color = '';
+    if (props.type) {
+      switch (props.type.toLowerCase()) {
+        case 'info':
+          color = '53, 189, 255'; break;
+        case 'warning':
+          color = '255, 106, 0'; break;
+        case 'error':
+          color = '255, 127, 35'; break;
+        default:
+          break;
+      }
+      return `border-color:rgba(${color},${(props.opacity || 0.2) + 0.4});
+      background-color:rgba(${color},${props.opacity || 0.2});
+      & > .icon path {
+        fill: rgba(${color},${(props.opacity || 0.2) + 0.4});
+      }
+      &:before {
+        color: rgba(${color},${(props.opacity || 0.2) + 0.4});
+      }`
+    }
+  }}
+
+  & > .icon {
+    position: absolute;
+  }
+
+
+`;
+
 const AppContainer = withAnimated(styled.div`
   padding: 5% 25%;
   overflow: hidden;
@@ -387,7 +455,7 @@ const data = [
   {
     prop: 'animation:',
     data: 'string Array<string> Function',
-    description: [<span key='d1-0'>Animation keybindings name, you can see all the animation names in the official </span>, <a key="d1-1" href="https://animate.style/">Animate.css</a>, <span key='d1-2'> website. If an array is specified multiple animation are added using the </span>, <strong key="d1-3">animation-name</strong>, <span key='d1-4'> css property</span>],
+    description: <span>Animation keybindings name, you can see all the animation names in the official <a key="d1-1" href="https://animate.style/">Animate.css</a> website. If an array is specified multiple animation are added using the <strong>animation-name</strong> css property</span>,
     key: '1'
   },
   {
@@ -422,6 +490,21 @@ const data = [
   }
 ];
 
+const groupData = [
+  {
+    prop: 'dampingDelay:',
+    data: 'Number Array<Number>',
+    description: <span>The delay damping factor for each child if <strong>greater than 1</strong> each animated child will wait longer then the previous child otherwise if <strong>less than 1</strong> the delay on each child will be shorter than the previous child</span>,
+    key: '1'
+  },
+  {
+    prop: 'dampingSpeed:',
+    data: 'Number Array<Number>',
+    description: <span>The speed damping factor for each child if <strong>greater than 1</strong> each animated child animation will last longer then the previous child otherwise if <strong>less than 1</strong> each animated child animation will be shorter than the previous child</span>,
+    key: '2'
+  }
+]
+
 const repoUrl = "https://github.com/darkimage/react-animate-hoc";
 
 const App = () => {
@@ -440,7 +523,11 @@ const App = () => {
         <title>React Animate HOC</title>
       </Head>
       <h1>React Animate <a href="https://reactjs.org/docs/higher-order-components.html">HOC</a></h1>
-      <p>This React library is designed to leverage the awesome <a href="https://animate.style/">animate.css</a> with little work, simply by wrapping your components using either <Code noPre code={codeWithAnimated} /> or <Code noPre code={codeWithAnimatedGroup}/></p>
+      <p>This React library is designed to leverage the awesome <a href="https://animate.style/">animate.css</a> with little work, simply by wrapping your components using either <Code noPre code={codeWithAnimated} /> or <Code noPre code={codeWithAnimatedGroup} /></p>
+      <NoteBox warning type="info">
+        <WarnCircle className="icon" />
+        <p>This library is still in<strong>Beta</strong> so future version can introduce breaking changes.</p>
+      </NoteBox>
       <div className="examples">
         <h2>Basic Example</h2>
         <Code code={exampleCode}/>
@@ -461,6 +548,10 @@ const App = () => {
         <Code code={multipleExampleCode} />
         <strong>Result:</strong>
         <MultipleAnim className="animateContainer">Multiple animations!!</MultipleAnim>
+        <NoteBox warning type="warning">
+          <WarnCircle className="icon" />
+          <p>When using<strong>multiple animations</strong> be sure to always check that<strong>all the arrays proprieties have the same length</strong>, when not doing so you may encounter unspecified behavior of the animations</p>
+        </NoteBox>
         <h2>Animate.css properties list</h2>
         <p>This is the complete list of supported options from Animate.css that you can supply to the hoc functions, remember that you can specify additional css properties by writing them in camel case.</p>
         <p>You can also assign to each of this property a function, the parameters passed to the function are:</p> <Code code="(props, animateCssVariables) => {}"/> <p><strong>animateCssVariables</strong> contains an object with all the default css variables values of animate.css.</p>
@@ -477,6 +568,9 @@ const App = () => {
           <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
           <AnimateDivChild className="animateContainer">I'm a flipping div</AnimateDivChild>
         </AnimatedGroup>
+        <h4><Code noPre code="withAnimatedGroup()" /> additional proprieties</h4>
+        <p>Below are reported a list of all the proprieties that this hoc introduces to control the behaviour of it's children:</p>
+        <Table style={{ overflowX: "auto" }} tableLayout="fixed" columns={columns} data={groupData} />
         <h4>Working with multiple animation</h4>
         <p><Code noPre code="withAnimatedGroup()" /> works also with multiple animation, you have to just specify the correct array for the properties you are interested, and if you are using <Code noPre code="loop: true" /> the  <strong>wait property</strong> is calculated automatically for each child taking into account all the <strong>animation,duration and delays</strong>:</p>
         <Code code={groupMultipleAnimExampleCode} />
