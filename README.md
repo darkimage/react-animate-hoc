@@ -2,7 +2,7 @@
 
 > Hoc pattern for animate components using the awesome [animate.css](https://animate.style/) library
 
-[![NPM](https://img.shields.io/npm/v/@darkimage/react-animate-hoc.svg)](https://www.npmjs.com/package/react-animate-hoc) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@darkimage/react-animate-hoc.svg)](https://www.npmjs.com/package/@darkimage/react-animate-hoc) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
