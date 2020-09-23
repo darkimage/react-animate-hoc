@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save react-animate-hoc
+npm install --save @darkimage/react-animate-hoc
 ```
 
 ## Demo Example and Documentation
