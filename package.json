@@ -57,6 +57,13 @@
   "files": [
     "dist"
   ],
+  "keywords": [
+    "react",
+    "animate.css",
+    "animation",
+    "animate",
+    "hoc"
+  ],
   "dependencies": {
     "animate.css": "^4.1.1"
   }
